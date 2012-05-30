@@ -1,0 +1,17 @@
+<link type="text/css" rel="stylesheet" tal:attributes="href static['landing.css']"/>
+
+<div id="landingpage">
+  <div class="hero-unit">
+    <h1 tal:content="view.title">Heading</h1>
+    <p tal:content="view.description"></p>
+    <div class="offset1" id="lpcontent">
+      <a href="" tal:attributes="href ahm.getAddLink()">
+        <img class="landingimage" tal:attributes="src ahfi.icon" />
+      </a>
+      <blockquote class="startquote">
+        <h3 tal:content="ahfi.titel"> </h3>
+        <p tal:content="ahfi.beschreibung"> </p>
+      </blockquote>
+    </div>
+  </div>
+</div>
