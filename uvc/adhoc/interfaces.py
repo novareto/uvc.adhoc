@@ -7,6 +7,11 @@ import uvcsite
 from zope.interface import Interface
 
 
+class IAdHocIdReference(Interface):
+    """ Marker Interface for a kind of IntID Utility
+    """
+
+
 class IAdHocApplication(Interface):
     """ Marker Interface for AdHoc Applications
     """

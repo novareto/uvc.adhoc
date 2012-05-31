@@ -7,14 +7,13 @@ import uvcsite
 import zope.component
 
 from grokcore.registries import create_components_registry
-from uvc.adhoc.interfaces import IAdHocApplication
+from uvc.adhoc.interfaces import IAdHocApplication, IAdHocIdReference
+from uvc.adhoc.utils import AdHocIdReference
 from uvc.adhoc.auth.handler import AdHocAuthenticator
 from zope.pluggableauth.interfaces import IAuthenticatorPlugin
 from zope.pluggableauth import PluggableAuthentication
 from zope.authentication.interfaces import IAuthentication
 from zope.component.interfaces import IComponents
-from zc.intid.utility import IntIds
-from zc.intid import IIntIds
 
 
 adhocRegistry = create_components_registry(
@@ -32,7 +31,7 @@ def setup_pau(PAU):
         "Zope Realm Basic-Auth", "No Challenge if Authenticated")
 
 def intid_factory():
-    return IntIds(attribute='principal_id') 
+    return AdHocIdReference(attribute='principal_id') 
 
 
 class Dokumente(grok.Container):
@@ -52,7 +51,7 @@ class AdHocApp(grok.Application, grok.Container):
                        setup=setup_pau)
 
     grok.local_utility(intid_factory,
-                       IIntIds,
+                       IAdHocIdReference,
                        public=True)
 
 

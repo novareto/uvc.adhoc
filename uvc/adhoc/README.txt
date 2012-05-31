@@ -75,13 +75,21 @@ Content
 
   >>> from uvc.adhoc import AdHocContent
   >>> waa = AdHocContent()
+  >>> waa
+  <uvc.adhoc.components.AdHocContent object at ...>
+
   >>> from zope.component import getUtility
-  >>> from zc.intid import IIntIds
-  >>> iiutil = getUtility(IIntIds)
+  >>> from uvc.adhoc.interfaces import IAdHocIdReference 
+  >>> iiutil = getUtility(IAdHocIdReference)
   >>> iiutil.register(waa)
-  >>> iiutil.register(waa)
-  >>> import pdb; pdb.set_trace() 
-  
+  12345678
+
+  >>> iiutil.getObject(12345678)
+  <uvc.adhoc.components.AdHocContent object at ...>
+
+  >>> iiutil.getObject(12345678) is waa
+  True
+
 
 
 IntIds
