@@ -5,6 +5,7 @@
 import uvcsite
 
 from zope.interface import Interface
+from zope.container.interfaces import IContainer
 
 
 class IAdHocIdReference(Interface):
@@ -43,5 +44,10 @@ class IAdHocManagement(Interface):
 
 
 class IAdHocContent(uvcsite.IContent):
+    """ Marker Interface for AdHoc Content Types
+    """
+
+
+class IAdHocProductFolder(IContainer):
     """ Marker Interface for AdHoc Content Types
     """

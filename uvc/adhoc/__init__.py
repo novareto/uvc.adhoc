@@ -5,12 +5,12 @@
 import logging
 
 from uvc.adhoc.interfaces import (IAdHocContent,
-    IAdHocApplication, IAdHocUserInfo)
+    IAdHocApplication, IAdHocUserInfo, IAdHocProductFolder)
+from uvc.adhoc.components import AdHocContent, AdHocProductFolder
 from uvc.adhoc.app import AdHocApp
 from uvc.adhoc.adapters import getAdHocUserInfo, AdHocUserInfo
 from uvc.adhoc.directive import content
 from uvc.adhoc.views import BaseAddView
-from uvc.adhoc.components import AdHocContent
 
 
 logger = logging.getLogger('uvc.adhoc')

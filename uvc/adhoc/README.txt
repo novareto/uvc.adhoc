@@ -50,20 +50,22 @@ Setup
   >>> grok_component('MyAdHocUserInfo', MyAdHocUserInfo)
   True
 
-
-
+  >>> from uvc.adhoc import IAdHocProductFolder
   >>> adhocuserinfo = getAdHocUserInfo(christian, request)
   >>> adhocuserinfo
   <MyAdHocUserInfo object at ...>
 
-  >>> date_folder = adhocuserinfo.getDateFolder()
-  >>> date_folder
-  <uvc.adhoc.adapters.DateFolder object at 0...>
+  >>> p_folder = adhocuserinfo.getProductFolder()
+  >>> p_folder
+  <uvc.adhoc.components.AdHocProductFolder object at 0...>
+
+  >>> IAdHocProductFolder.providedBy(p_folder)
+  True
 
   >>> len(dokumente)
   1
 
-  >>> len(date_folder)
+  >>> len(p_folder)
   0
 
   >>> adhocuserinfo.getAddLink()
@@ -73,27 +75,59 @@ Setup
 Content
 -------
 
-  >>> from uvc.adhoc import AdHocContent
+  >>> from uvc.adhoc import AdHocContent, IAdHocContent
   >>> waa = AdHocContent()
   >>> waa
   <uvc.adhoc.components.AdHocContent object at ...>
 
-  >>> from zope.component import getUtility
-  >>> from uvc.adhoc.interfaces import IAdHocIdReference 
-  >>> iiutil = getUtility(IAdHocIdReference)
-  >>> iiutil.register(waa)
-  12345678
-
-  >>> iiutil.getObject(12345678)
-  <uvc.adhoc.components.AdHocContent object at ...>
-
-  >>> iiutil.getObject(12345678) is waa
+  >>> IAdHocContent.providedBy(waa)
   True
 
+  >>> p_folder.add(waa)
+
+  >>> len(p_folder)
+  1
+
+  >>> p_folder.get(request.principal.id)
+  <uvc.adhoc.components.AdHocContent object at ...>
+
+
+Workflow
+--------
+
+  >>> from hurry.workflow.interfaces import IWorkflowState
+  >>> IWorkflowState(waa).getState()
+  0
+
+Security
+--------
+
+  >>> from zope.securitypolicy.interfaces import IPrincipalPermissionManager
+  >>> ppm = IPrincipalPermissionManager(waa)
+  >>> ppm.getPermissionsForPrincipal(waa.principal.id)
+  []
+
+  >>> from hurry.workflow.interfaces import IWorkflowInfo
+  >>> IWorkflowInfo(waa).fireTransition('publish')
+  >>> ppm = IPrincipalPermissionManager(waa)
+  >>> ppm.getPermissionsForPrincipal(waa.principal.id)
+  [('uvc.ViewContent', PermissionSetting: Allow)]
 
 
 IntIds
 ------
 
+  >>> from zope.component import getUtility
+  >>> from uvc.adhoc.interfaces import IAdHocIdReference 
+  >>> refs = getUtility(IAdHocIdReference)
+  >>> ref_obj = refs.queryObject(int(request.principal.id))
+  >>> ref_obj
+  <uvc.adhoc.components.AdHocContent object at 0...>
+
+  >>> ref_obj is waa
+  True
+
+  >>> ref_obj.__parent__ is p_folder
+  True
 
   >>> endInteraction()

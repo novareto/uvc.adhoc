@@ -5,7 +5,8 @@
 import grok
 import uvcsite
 
-from uvc.adhoc import IAdHocContent
+from uvc.adhoc import IAdHocContent, IAdHocProductFolder
+
 
 class AdHocContent(uvcsite.Content):
     grok.implements(IAdHocContent)
@@ -17,3 +18,19 @@ class AdHocContent(uvcsite.Content):
         return int(self.principal.id)
 
     principal_id = property(get_principal_id, set_principal_id)
+
+
+
+class AdHocProductFolder(grok.Container):
+    grok.implements(IAdHocProductFolder)
+
+    def getContentType(self):
+        return 
+
+    def getContentName(self):
+        return "RUMS"
+
+    def add(self, content):
+        self[content.principal.id] = content
+
+
