@@ -29,7 +29,11 @@ class LandingPage(uvcsite.Page):
 
     def namespace(self):
         ahm = getAdHocUserInfo(self.request.principal, self.request)
-        return dict(ahm = ahm, ahfi = ahm.formular_informationen) 
+        return dict(
+            ahm = ahm, 
+            obj = ahm.getObject(),
+            ahfi = ahm.formular_informationen,
+            ) 
 
 
 class BaseAddView(Add):

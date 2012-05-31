@@ -8,8 +8,9 @@ import time
 from zope.component import getMultiAdapter
 from zope.security.interfaces import IPrincipal
 from uvc.adhoc.interfaces import IAdHocUserInfo
-from uvc.adhoc import AdHocProductFolder
+from uvc.adhoc import AdHocProductFolder, IAdHocIdReference
 from zope.publisher.interfaces.http import IHTTPRequest
+from zope.component import getUtility
 
 
 def getAdHocUserInfo(principal, request):
@@ -37,6 +38,13 @@ class AdHocUserInfo(grok.MultiAdapter):
         return base[folder_name]
 
     def getAddLink(self):
+        obj = self.getObject()
+        if obj:
+            return grok.url(self.request, obj)
         datefolder = self.getProductFolder()
         addlink = "@@%s" % self.formular_informationen.get('titel').replace(' ', '_').lower()
         return grok.url(self.request, datefolder, addlink)
+
+    def getObject(self):
+        util = getUtility(IAdHocIdReference)
+        return util.queryObject(int(self.principal.id))

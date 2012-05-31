@@ -30,6 +30,7 @@ def setup_pau(PAU):
     PAU.credentialsPlugins = ("cookies",
         "Zope Realm Basic-Auth", "No Challenge if Authenticated")
 
+
 def intid_factory():
     return AdHocIdReference(attribute='principal_id') 
 

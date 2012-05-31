@@ -4,7 +4,7 @@
   <div class="hero-unit">
     <h1 tal:content="view.title">Heading</h1>
     <p tal:content="view.description"></p>
-    <div class="offset1" id="lpcontent">
+    <div class="offset1" id="lpcontent" tal:condition="not: obj">
       <a href="" tal:attributes="href ahm.getAddLink()">
         <img class="landingimage" tal:attributes="src ahfi.icon" />
       </a>
@@ -12,6 +12,32 @@
         <h3 tal:content="ahfi.titel"> </h3>
         <p tal:content="ahfi.beschreibung"> </p>
       </blockquote>
+    </div>
+    <div class="offset1" id="lpcontent" tal:condition="obj">
+      <a href="" tal:attributes="href ahm.getAddLink()">
+        <img class="landingimage" tal:attributes="src ahfi.icon" />
+      </a>
+      <blockquote class="startquote">
+        <h3> Vielen Dank, ihr Formualr ist bereits bei uns eingegangen </h3>
+        <h3 tal:content="ahfi.titel"> </h3>
+        <p tal:content="ahfi.beschreibung"> </p>
+      </blockquote>
+      <table class="table table-striped span6 offset2" >
+        <tbody>
+          <tr> 
+            <th> Titel </th> 
+            <td tal:content="obj.title"> </td>
+          </tr>
+          <tr>
+            <th> Datum </th>
+            <td tal:content="obj.modtime.strftime('%d.%m.%Y')"> </td>
+          </tr>
+          <tr> 
+            <th> Status </th>
+            <td> GESENDET </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>

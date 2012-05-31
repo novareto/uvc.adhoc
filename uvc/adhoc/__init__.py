@@ -4,7 +4,7 @@
 
 import logging
 
-from uvc.adhoc.interfaces import (IAdHocContent,
+from uvc.adhoc.interfaces import (IAdHocContent, IAdHocIdReference,
     IAdHocApplication, IAdHocUserInfo, IAdHocProductFolder)
 from uvc.adhoc.components import AdHocContent, AdHocProductFolder
 from uvc.adhoc.app import AdHocApp
