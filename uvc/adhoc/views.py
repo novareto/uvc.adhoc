@@ -68,8 +68,8 @@ class BaseAddView(Add):
             return obj
 
     def nextURL(self):
-        self.flash(u'Added Content')
-        return self.url(self.context, self.request.principal.id)
+        self.flash(u'Ihr Formular ist erfolgreich bei uns eingegangen.')
+        return self.application_url()
 
 
 class BaseView(Display):
