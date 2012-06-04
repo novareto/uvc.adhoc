@@ -5,12 +5,12 @@
 import grok
 import time
 
-from zope.component import getMultiAdapter
-from zope.security.interfaces import IPrincipal
-from uvc.adhoc.interfaces import IAdHocUserInfo
-from uvc.adhoc import AdHocProductFolder, IAdHocIdReference
-from zope.publisher.interfaces.http import IHTTPRequest
 from zope.component import getUtility
+from zope.component import getMultiAdapter
+from uvc.adhoc.interfaces import IAdHocUserInfo
+from zope.security.interfaces import IPrincipal
+from zope.publisher.interfaces.http import IHTTPRequest
+from uvc.adhoc import AdHocProductFolder, IAdHocIdReference
 
 
 def getAdHocUserInfo(principal, request):
@@ -47,4 +47,6 @@ class AdHocUserInfo(grok.MultiAdapter):
 
     def getObject(self):
         util = getUtility(IAdHocIdReference)
+        if not self.principal.id.isdigit():
+            return
         return util.queryObject(int(self.principal.id))
