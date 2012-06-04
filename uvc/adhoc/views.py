@@ -1,20 +1,19 @@
 # -*- coding: utf-8 -*-
 # Copyright (c) 2007-2011 NovaReto GmbH
-# cklinger@novareto.de 
+# cklinger@novareto.de
 
 import grok
 import uvcsite
 
-from uvcsite.content.views import Add, Display
-from uvc.layout.forms.components import Form
-from uvc.adhoc import IAdHocProductFolder, IAdHocApplication, IAdHocContent
-from uvc.adhoc import getAdHocUserInfo, content
-from zope.dottedname.resolve import resolve
 from dolmen.content import schema
-from megrok.z3ctable import TablePage, Column, GetAttrColumn, CheckBoxColumn, LinkColumn, ModifiedColumn
+from zope.dottedname.resolve import resolve
+from uvcsite.content.views import Add, Display
+from zope.traversing.browser import absoluteURL
+from uvc.adhoc import getAdHocUserInfo, content
 from hurry.workflow.interfaces import IWorkflowState
 from uvcsite.workflow.basic_workflow import titleForState
-from zope.traversing.browser import absoluteURL
+from megrok.z3ctable import TablePage, Column, GetAttrColumn, LinkColumn
+from uvc.adhoc import IAdHocProductFolder, IAdHocApplication, IAdHocContent
 
 
 grok.templatedir('templates')
@@ -30,10 +29,10 @@ class LandingPage(uvcsite.Page):
     def namespace(self):
         ahm = getAdHocUserInfo(self.request.principal, self.request)
         return dict(
-            ahm = ahm, 
-            obj = ahm.getObject(),
-            ahfi = ahm.formular_informationen,
-            ) 
+            ahm=ahm,
+            obj=ahm.getObject(),
+            ahfi=ahm.formular_informationen,
+            )
 
 
 class BaseAddView(Add):
@@ -73,7 +72,8 @@ class DisplayProductFolderListing(TablePage):
     grok.name('index')
     grok.context(IAdHocProductFolder)
 
-    cssClasses = {'table': 'tablesorter table table-striped table-bordered table-condensed'}
+    cssClasses = {'table':
+        'tablesorter table table-striped table-bordered table-condensed'}
 
 
 class Link(LinkColumn):
@@ -111,7 +111,7 @@ class CreatorColumn(Column):
     weight = 99
 
     def renderCell(self, item):
-        return item.principal.id 
+        return item.principal.id
 
 
 class ModifiedColumn(Column):

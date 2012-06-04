@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # Copyright (c) 2007-2011 NovaReto GmbH
-# cklinger@novareto.de 
+# cklinger@novareto.de
 
 import grok
 import time
@@ -42,7 +42,8 @@ class AdHocUserInfo(grok.MultiAdapter):
         if obj:
             return grok.url(self.request, obj)
         datefolder = self.getProductFolder()
-        addlink = "@@%s" % self.formular_informationen.get('titel').replace(' ', '_').lower()
+        addlink = "@@%s" % (
+            self.formular_informationen.get('titel').replace(' ', '_').lower())
         return grok.url(self.request, datefolder, addlink)
 
     def getObject(self):

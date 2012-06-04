@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # Copyright (c) 2007-2011 NovaReto GmbH
-# cklinger@novareto.de 
+# cklinger@novareto.de
 
 import grok
 
-from zope.component import getUtility
 from uvc.adhoc import IAdHocContent
+from zope.component import getUtility
 from uvc.adhoc.interfaces import IAdHocIdReference
 from uvcsite.workflow.basic_workflow import PUBLISHED
 from hurry.workflow.interfaces import IWorkflowTransitionEvent

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # Copyright (c) 2007-2011 NovaReto GmbH
-# cklinger@novareto.de 
+# cklinger@novareto.de
 
 import uvcsite
 
@@ -34,7 +34,6 @@ class IAdHocUserInfo(Interface):
     def formular_informationen():
         """Returns Information about the specific Formular
         """
-
 
 
 class IAdHocManagement(Interface):
