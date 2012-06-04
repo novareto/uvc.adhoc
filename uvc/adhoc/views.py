@@ -6,7 +6,9 @@ import grok
 import uvcsite
 
 from dolmen.content import schema
+from zeam.form.base import DictDataManager
 from zope.dottedname.resolve import resolve
+from dolmen.forms.base import set_fields_data
 from uvcsite.content.views import Add, Display
 from zope.traversing.browser import absoluteURL
 from uvc.adhoc import getAdHocUserInfo, content
@@ -40,16 +42,30 @@ class BaseAddView(Add):
     grok.require('zope.View')
     grok.baseclass()
 
+    ignoreContent = False
+
+    @property
+    def defaults(self):
+        ahui = getAdHocUserInfo(
+            self.request.principal, self.request)
+        return ahui.formular_informationen.get('defaults', {})
+
     @property
     def fields(self):
         content_object = content.bind().get(self)
         schemas = schema.bind().get(resolve(content_object))
         return uvcsite.Fields(*schemas)
 
+    def update(self):
+        self.setContentData(
+            DictDataManager(self.defaults))
+
     def create(self, data):
         content_object = content.bind().get(self)
-        if content:
-            return resolve(content_object)()
+        if content_object:
+            obj = resolve(content_object)()
+            set_fields_data(self.fields, obj, data)
+            return obj
 
     def nextURL(self):
         self.flash(u'Added Content')
