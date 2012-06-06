@@ -6,10 +6,19 @@ import grok
 
 from uvc.adhoc import IAdHocContent
 from zope.component import getUtility
+from uvc.adhoc.interfaces import IAdHocSkin
+from zope.publisher.browser import applySkin
 from uvc.adhoc.interfaces import IAdHocIdReference
+from uvc.adhoc.interfaces import IAdHocApplication
 from uvcsite.workflow.basic_workflow import PUBLISHED
 from hurry.workflow.interfaces import IWorkflowTransitionEvent
+from zope.app.publication.interfaces import IBeforeTraverseEvent
 from zope.securitypolicy.interfaces import IPrincipalPermissionManager
+
+
+@grok.subscribe(IAdHocApplication, IBeforeTraverseEvent)
+def handle(obj, event):
+    applySkin(event.request, IAdHocSkin)
 
 
 @grok.subscribe(IAdHocContent, grok.IObjectAddedEvent)

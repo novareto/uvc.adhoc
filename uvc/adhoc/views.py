@@ -14,6 +14,7 @@ from zope.traversing.browser import absoluteURL
 from uvc.adhoc import getAdHocUserInfo, content
 from hurry.workflow.interfaces import IWorkflowState
 from uvcsite.workflow.basic_workflow import titleForState
+from zope.authentication.interfaces import IUnauthenticatedPrincipal
 from megrok.z3ctable import TablePage, Column, GetAttrColumn, LinkColumn
 from uvc.adhoc import IAdHocProductFolder, IAdHocApplication, IAdHocContent
 
@@ -81,6 +82,38 @@ class BaseView(Display):
     @property
     def fields(self):
         return uvcsite.Fields(*self.context.schema)
+
+
+class LogoutMenu(uvcsite.MenuItem):
+    grok.name('Logout')
+    grok.title('Logout')
+    grok.require('zope.View')
+    grok.viewletmanager(uvcsite.IPersonalPreferences)
+
+    @property
+    def action(self):
+        return "%s/logout" % self.view.application_url()
+
+
+class Logout(grok.View):
+    """ Logout View
+    """
+    grok.name('logout')
+    grok.title('Logout')
+    grok.require('zope.View')
+    grok.context(IAdHocApplication)
+    grok.viewletmanager(uvcsite.IPersonalPreferences)
+
+    KEYS = ("beaker.session", "dolmen.authcookie")
+
+    def update(self):
+        if not IUnauthenticatedPrincipal.providedBy(self.request.principal):
+            for key in self.KEYS:
+                self.request.response.expireCookie(key, path='/')
+
+    def render(self):
+        return self.redirect(self.application_url())
+
 
 
 class DisplayProductFolderListing(TablePage):
