@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # Copyright (c) 2007-2011 NovaReto GmbH
-# cklinger@novareto.de 
+# cklinger@novareto.de
 
 import logging
 
@@ -14,6 +14,7 @@ from uvc.adhoc.views import BaseAddView
 
 
 logger = logging.getLogger('uvc.adhoc')
+
 
 def log(message, summary='', severity=logging.INFO):
     logger.log(severity, '%s %s', summary, message)

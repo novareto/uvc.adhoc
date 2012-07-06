@@ -115,7 +115,6 @@ class Logout(grok.View):
         return self.redirect(self.application_url())
 
 
-
 class DisplayProductFolderListing(TablePage):
     grok.title(u'AdHoc Objekte')
     grok.name('index')

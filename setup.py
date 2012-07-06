@@ -23,7 +23,6 @@ setup(name='uvc.adhoc',
       zip_safe=False,
       install_requires=[
           'setuptools',
-          'mongopersist',
 
       ],
       entry_points={

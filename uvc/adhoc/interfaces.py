@@ -19,9 +19,11 @@ class IAdHocApplication(Interface):
     """ Marker Interface for AdHoc Applications
     """
 
+
 class IAdHocLayer(Interface):
     """ Layer which is applied to AdHoc Applications
     """
+
 
 class IAdHocSkin(IAdHocLayer, ITBSkin):
     """ Skin for IADHocApplications
