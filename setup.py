@@ -23,8 +23,8 @@ setup(name='uvc.adhoc',
       zip_safe=False,
       install_requires=[
           'setuptools',
-          'zc.intid',
-          # -*- Extra requirements: -*-
+          'mongopersist',
+
       ],
       entry_points={
          'fanstatic.libraries': [
