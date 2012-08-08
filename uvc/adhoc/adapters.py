@@ -54,5 +54,7 @@ class AdHocUserInfo(grok.MultiAdapter):
 
     @property
     def clearname(self):
+        if not self.formular_informationen:
+            return self.request.principal.id
         username = self.formular_informationen.get('clearname')
         return username or self.request.principal.id
