@@ -65,5 +65,7 @@ class AdHocApp(grok.Application, grok.Container):
 
     def getSiteManager(self):
         current = super(AdHocApp, self).getSiteManager()
-        current.__bases__ += (adhocRegistry,)
+        if adhocRegistry not in current.__bases__:
+             adhocRegistry.__bases__ = tuple([x for x in adhocRegistry.__bases__ if x.__hash__() != zope.component.globalSiteManager.__hash__()])
+             current.__bases__ += (adhocRegistry,)
         return current
