@@ -5,18 +5,20 @@
 import grok
 import uvcsite
 
+from zope.component import getUtility
 from dolmen.content import schema
 from zeam.form.base import DictDataManager
 from zope.dottedname.resolve import resolve
 from dolmen.forms.base import set_fields_data
 from uvcsite.content.views import Add, Display
 from zope.traversing.browser import absoluteURL
-from uvc.adhoc import getAdHocUserInfo, content
+from uvc.adhoc import getAdHocDocumentInfo, content
 from hurry.workflow.interfaces import IWorkflowState
 from uvcsite.workflow.basic_workflow import titleForState
 from zope.authentication.interfaces import IUnauthenticatedPrincipal
 from megrok.z3ctable import TablePage, Column, GetAttrColumn, LinkColumn
 from uvc.adhoc import IAdHocProductFolder, IAdHocApplication, IAdHocContent
+from .interfaces import IAdHocManagement
 
 
 grok.templatedir('templates')
@@ -29,13 +31,8 @@ class LandingPage(uvcsite.Page):
     title = u"Willkommen im AdHocManagement"
     description = u"Beschreibung Beschreibung"
 
-    def namespace(self):
-        ahm = getAdHocUserInfo(self.request.principal, self.request)
-        return dict(
-            ahm=ahm,
-            obj=ahm.getObject(),
-            ahfi=ahm.formular_informationen,
-            )
+    def getFormulare(self):
+        return IAdHocManagement(self.request.principal).getFormulare()
 
 
 class BaseAddView(Add):
@@ -47,9 +44,7 @@ class BaseAddView(Add):
 
     @property
     def defaults(self):
-        ahui = getAdHocUserInfo(
-            self.request.principal, self.request)
-        return ahui.formular_informationen.get('defaults', {})
+        return IAdHocManagement(self.request.principal).getFormularById(grok.name.bind().get(self)).ahm.get('defaults', {})
 
     @property
     def fields(self):

@@ -9,7 +9,7 @@ uvc.adhoc
 Setup
 -----
 
-  >>> from uvc.adhoc import AdHocApp, IAdHocUserInfo
+  >>> from uvc.adhoc import AdHocApp, IAdHocDocumentInfo
   >>> from zope.component.hooks import setSite
   >>> from zope.pluggableauth.factories import Principal
   >>> from zope.publisher.browser import TestRequest
@@ -32,11 +32,48 @@ Setup
   >>> christian
   Principal('christian')
 
+  >>> import grok
   >>> from uvcsite.tests import startInteraction, endInteraction
   >>> request = startInteraction('12345678') 
-  >>> from uvc.adhoc import getAdHocUserInfo, AdHocUserInfo
+  >>> from uvc.adhoc import getAdHocDocumentInfo, AdHocDocumentInfo, IAdHocManagement, AdHocManagement
+  >>> from grokcore.component.testing import grok_component
+  >>> from pprint import pformat
 
-  >>> class MyAdHocUserInfo(AdHocUserInfo):
+IAdHocUserManagement
+--------------------
+
+  >>> class MyAdHocManagement(AdHocManagement):
+  ...     def getUser(self):
+  ...         return dict(
+  ...             az="12345678",
+  ...             passwort="passwort",
+  ...             clearname=u"Christian Klinger",
+  ...             documents=[
+  ...               dict(
+  ...                     docart='wiederaufnahmearbeit',
+  ...                     defaults={'title': 'Wiederaufnahme Arbeitsfähigkeit'},
+  ...                   ),
+  ...              ]
+  ...             ) 
+
+  >>> grok_component('MyAdHocManagement', MyAdHocManagement)
+  True
+
+  >>> ahm = IAdHocManagement(christian)
+  >>> ahm
+  <MyAdHocManagement object at 0x...>
+
+  >>> print pformat(ahm.getUser())
+  {'az': '12345678',
+   'clearname': u'Christian Klinger',
+   'documents': [{'defaults': {'title': 'Wiederaufnahme Arbeitsf\xc3\xa4higkeit'},
+                  'docart': 'wiederaufnahmearbeit'}],
+   'passwort': 'passwort'}
+
+
+  >>> class MyAdHocDocumentInfo(AdHocDocumentInfo):
+  ...     grok.name('wiederaufnahmearbeit')
+  ...
   ...     @property
   ...     def formular_informationen(self):
   ...         return dict(
@@ -46,14 +83,13 @@ Setup
   ...            icon = "fanstatic/uvc.ahex/unfallanzeige.png",
   ...            )
 
-  >>> from grokcore.component.testing import grok_component
-  >>> grok_component('MyAdHocUserInfo', MyAdHocUserInfo)
+  >>> grok_component('MyAdHocDocumentInfo', MyAdHocDocumentInfo)
   True
 
   >>> from uvc.adhoc import IAdHocProductFolder
-  >>> adhocuserinfo = getAdHocUserInfo(christian, request)
+  >>> adhocuserinfo = getAdHocDocumentInfo(christian, request, ahm.getUser()['documents'][0], "wiederaufnahmearbeit")
   >>> adhocuserinfo
-  <MyAdHocUserInfo object at ...>
+  <MyAdHocDocumentInfo object at ...>
 
   >>> p_folder = adhocuserinfo.getProductFolder()
   >>> p_folder
@@ -69,7 +105,7 @@ Setup
   0
 
   >>> adhocuserinfo.getAddLink()
-  'http://127.0.0.1/app/dokumente/.../@@wiederaufnahme_der_arbeit'
+  'http://127.0.0.1/app/dokumente/.../@@wiederaufnahmearbeit'
 
 
 Content

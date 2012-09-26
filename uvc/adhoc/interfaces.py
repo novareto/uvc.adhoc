@@ -31,7 +31,7 @@ class IAdHocSkin(IAdHocLayer, ITBSkin):
     grok.skin('adhoc')
 
 
-class IAdHocUserInfo(Interface):
+class IAdHocDocumentInfo(Interface):
     """ Adapter for Extending a Principal with
         special AdHocInformation
     """

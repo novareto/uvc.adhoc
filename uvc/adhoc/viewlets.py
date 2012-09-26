@@ -6,8 +6,7 @@
 import grok
 
 
-from uvc.adhoc.interfaces import IAdHocLayer
-from uvc.adhoc.adapters import getAdHocUserInfo
+from uvc.adhoc.interfaces import IAdHocLayer, IAdHocManagement 
 from uvc.layout.slots.menuviewlets import PersonalPreferencesViewlet
 
 
@@ -18,4 +17,4 @@ class PersonalPreferences(PersonalPreferencesViewlet):
 
     @property
     def username(self):
-        return getAdHocUserInfo(self.request.principal, self.request).clearname
+        return IAdHocManagement(self.request.principal).clearname

@@ -4,31 +4,65 @@
 
 import grok
 import time
+import uvcsite
 
+from zope.interface import Interface
 from zope.component import getUtility
 from zope.component import getMultiAdapter
-from uvc.adhoc.interfaces import IAdHocUserInfo
+from uvc.adhoc.interfaces import IAdHocDocumentInfo, IAdHocManagement
 from zope.security.interfaces import IPrincipal
 from zope.publisher.interfaces.http import IHTTPRequest
 from uvc.adhoc import AdHocProductFolder, IAdHocIdReference
 
 
-def getAdHocUserInfo(principal, request):
-    return getMultiAdapter((principal, request), IAdHocUserInfo)
-
-
-class AdHocUserInfo(grok.MultiAdapter):
-    grok.adapts(IPrincipal, IHTTPRequest)
-    grok.implements(IAdHocUserInfo)
+class AdHocManagement(grok.Adapter):
+    grok.context(IPrincipal)
+    grok.implements(IAdHocManagement)
     grok.baseclass()
 
-    def __init__(self, principal, request):
-        self.principal = principal
-        self.request = request
+    def getUser(self):
+        return {}
+
+    def getFormulare(self):
+        ahms = self.getUser().get('documents', [])
+        request = uvcsite.utils.shorties.getRequest()
+        for ahm in ahms:
+            ahfm = getAdHocDocumentInfo(self.context, request, ahm, name=ahm.get('docart'))
+            yield ahfm
+
+    def getFormularById(self, id):
+        for ahm in self.getFormulare():
+            if grok.name.bind().get(ahm) == id:
+                return ahm
+        return 
 
     @property
-    def formular_informationen(self):
-        raise NotImplementedError
+    def clearname(self):
+        daten = self.getUser()
+        if not daten:
+            return self.context.id
+        username = daten.get('clearname')
+        return username or self.request.principal.id
+
+
+
+def getAdHocDocumentInfo(principal, request, ahm, name):
+    return getMultiAdapter((principal, request, ahm), IAdHocDocumentInfo, name=name)
+
+
+class AdHocDocumentInfo(grok.MultiAdapter):
+    grok.adapts(IPrincipal, IHTTPRequest, Interface)
+    grok.implements(IAdHocDocumentInfo)
+    grok.baseclass()
+
+    icon = u""
+    title = u""
+    description = u""
+
+    def __init__(self, principal, request, ahm):
+        self.principal = principal
+        self.request = request
+        self.ahm = ahm
 
     def getProductFolder(self):
         base = grok.getSite()['dokumente']
@@ -43,7 +77,7 @@ class AdHocUserInfo(grok.MultiAdapter):
             return grok.url(self.request, obj)
         datefolder = self.getProductFolder()
         addlink = "@@%s" % (
-            self.formular_informationen.get('titel').replace(' ', '_').lower())
+            self.ahm.get('docart').replace(' ', '_').lower())
         return grok.url(self.request, datefolder, addlink)
 
     def getObject(self):
@@ -51,10 +85,3 @@ class AdHocUserInfo(grok.MultiAdapter):
         if not self.principal.id.isdigit():
             return
         return util.queryObject(int(self.principal.id))
-
-    @property
-    def clearname(self):
-        if not self.formular_informationen:
-            return self.request.principal.id
-        username = self.formular_informationen.get('clearname')
-        return username or self.request.principal.id
