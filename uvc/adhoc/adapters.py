@@ -34,7 +34,7 @@ class AdHocManagement(grok.Adapter):
         for ahm in self.getFormulare():
             if grok.name.bind().get(ahm) == id:
                 return ahm
-        return 
+        return
 
     @property
     def clearname(self):
@@ -55,9 +55,9 @@ class AdHocDocumentInfo(grok.MultiAdapter):
     grok.implements(IAdHocDocumentInfo)
     grok.baseclass()
 
-    icon = u""
-    title = u""
-    description = u""
+    #icon = u""
+    #title = u""
+    #description = u""
 
     def __init__(self, principal, request, ahm):
         self.principal = principal

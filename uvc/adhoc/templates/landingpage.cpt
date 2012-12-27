@@ -1,61 +1,65 @@
 <link type="text/css" rel="stylesheet" tal:attributes="href static['landing.css']"/>
 
 <div id="landingpage">
-  <div class="hero-unit">
-    <h1 tal:content="view.title">Heading</h1>
-    <p tal:content="view.description"></p>
-    <div class="offset1" id="lpcontent" tal:condition="not: obj">
-      <a href="" tal:attributes="href ahm.getAddLink()">
-        <img class="landingimage" tal:attributes="src ahfi.icon" />
-      </a>
-      <blockquote class="startquote">
-        <h3 tal:content="ahfi.titel"> </h3>
-        <p tal:content="ahfi.beschreibung"> </p>
-      </blockquote>
-      <a class="offset2 btn btn-primary btn-large" tal:attributes="href ahm.getAddLink()"> 
-        Formular ausfüllen & absenden 
-      </a>
-    </div>
-    <div class="offset1" id="lpcontent" tal:condition="obj">
-      <a href="" tal:attributes="href ahm.getAddLink()">
-        <img class="landingimage" tal:attributes="src ahfi.icon" />
-      </a>
-      <blockquote class="startquote">
-        <h3> Vielen Dank, ihr Formualr ist bereits bei uns eingegangen </h3>
-        <h3 tal:content="ahfi.titel"> </h3>
-        <p tal:content="ahfi.beschreibung"> </p>
-      </blockquote>
-      <a class="offset2 btn btn-primary btn-large" tal:attributes="href ahm.getAddLink()"> 
-        Formular drucken 
-      </a>
-    </div>
-    <br> <br>
-    <div class="accordion">
-      <div class="accordion-group" tal:condition="obj">
-        <div class="accordion-heading"> 
-          <span class="accordion-toggle"> Die Daten Ihres eingegangenen Dokuments </span>
+    <div class="hero-unit">
+        <h1 tal:content="view.title">Heading</h1>
+        <p tal:content="view.description"></p>
+        <div tal:repeat="obj view.getFormulare()">
+            <div class="offset1" id="lpcontent" tal:condition="not: obj.getObject()">
+                <a href="" tal:attributes="href obj.getAddLink()">
+                    <img class="landingimage" tal:attributes="src obj.icon" />
+                </a>
+                <blockquote class="startquote">
+                    <h3 tal:content="obj.title"> </h3>
+                    <p tal:content="obj.description"> </p>
+                </blockquote>
+                <a class="offset2 btn btn-primary btn-large" tal:attributes="href obj.getAddLink()"> 
+                    Formular ausfüllen & absenden 
+                </a>
+            </div>
+            <div class="offset1" id="lpcontent" tal:condition="obj.getObject()">
+                <a href="" tal:attributes="href obj.getAddLink()">
+                    <img class="landingimage" tal:attributes="src obj.icon" />
+                </a>
+                <blockquote class="startquote">
+                    <h3> Vielen Dank, ihr Formualr ist bereits bei uns eingegangen </h3>
+                    <h3 tal:content="obj.title"> </h3>
+                    <p tal:content="obj.description"> </p>
+                </blockquote>
+                <a class="offset2 btn btn-primary btn-large" tal:attributes="href obj.getAddLink()"> 
+                    Formular drucken 
+                </a>
+            </div>
+            <br> <br>
+<!--
+            <div class="accordion">
+                <div class="accordion-group" tal:condition="obj">
+                    <div class="accordion-heading"> 
+                        <span class="accordion-toggle"> Die Daten Ihres eingegangenen Dokuments </span>
+                    </div>
+                    <div class="accordion-body">
+                        <div class="accordion-inner">
+                            <table class="table table-striped" >
+                                <tbody>
+                                    <tr> 
+                                        <th> Titel </th> 
+                                        <td tal:content="obj.title"> </td>
+                                    </tr>
+                                    <tr>
+                                        <th> Datum </th>
+                                        <td tal:content="obj.modtime.strftime('%d.%m.%Y')"> </td>
+                                    </tr>
+                                    <tr> 
+                                        <th> Status </th>
+                                        <td> GESENDET </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+-->
         </div>
-        <div class="accordion-body">
-          <div class="accordion-inner">
-          <table class="table table-striped" >
-            <tbody>
-              <tr> 
-                <th> Titel </th> 
-                <td tal:content="obj.title"> </td>
-              </tr>
-              <tr>
-                <th> Datum </th>
-                <td tal:content="obj.modtime.strftime('%d.%m.%Y')"> </td>
-              </tr>
-              <tr> 
-                <th> Status </th>
-                <td> GESENDET </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        </div>
-      </div>
     </div>
-  </div>
 </div>
