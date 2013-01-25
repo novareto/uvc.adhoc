@@ -36,7 +36,7 @@ def setup_pau(PAU):
 
 
 def intid_factory():
-    return AdHocIdReference(attribute='principal_id')
+    return AdHocIdReference(attribute='uid')
 
 
 class Dokumente(grok.Container):

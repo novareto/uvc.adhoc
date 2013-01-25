@@ -39,6 +39,7 @@ class AdHocAuthenticator(grok.Model):
                 return
 
             user = utility.getUser(login)
+            print user
             if not user:
                 return
 

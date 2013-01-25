@@ -50,6 +50,7 @@ class AdHocIdReference(persistent.Persistent):
     def getId(self, ob):
         unwrapped = unwrap(ob)
         uid = getattr(unwrapped, self.attribute, None)
+        print uid
         if uid is None:
             raise KeyError(ob)
         return uid

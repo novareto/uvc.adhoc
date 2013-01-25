@@ -4,36 +4,35 @@
     <div class="hero-unit">
         <h1 tal:content="view.title">Heading</h1>
         <p tal:content="view.description"></p>
-        <div tal:repeat="obj view.getFormulare()">
-            <div class="offset1" id="lpcontent" tal:condition="not: obj.getObject()">
-                <a href="" tal:attributes="href obj.getAddLink()">
-                    <img class="landingimage" tal:attributes="src obj.icon" />
+        <div tal:repeat="formular view.getFormulare()">
+            <div class="offset1" id="lpcontent" tal:condition="not: formular.getObject()">
+                <a href="" tal:attributes="href formular.getAddLink()">
+                    <img class="landingimage" tal:attributes="src formular.icon" />
                 </a>
                 <blockquote class="startquote">
-                    <h3 tal:content="obj.title"> </h3>
-                    <p tal:content="obj.description"> </p>
+                    <h3 tal:content="formular.title"> </h3>
+                    <p tal:content="formular.description"> </p>
                 </blockquote>
-                <a class="offset2 btn btn-primary btn-large" tal:attributes="href obj.getAddLink()"> 
+                <a class="offset2 btn btn-primary btn-large" tal:attributes="href formular.getAddLink()"> 
                     Formular ausfüllen & absenden 
                 </a>
             </div>
-            <div class="offset1" id="lpcontent" tal:condition="obj.getObject()">
-                <a href="" tal:attributes="href obj.getAddLink()">
-                    <img class="landingimage" tal:attributes="src obj.icon" />
+            <div class="offset1" id="lpcontent" tal:condition="formular.getObject()">
+                <a href="" tal:attributes="href formular.getAddLink()">
+                    <img class="landingimage" tal:attributes="src formular.icon" />
                 </a>
                 <blockquote class="startquote">
                     <h3> Vielen Dank, ihr Formualr ist bereits bei uns eingegangen </h3>
-                    <h3 tal:content="obj.title"> </h3>
-                    <p tal:content="obj.description"> </p>
+                    <h3 tal:content="formular.title"> </h3>
+                    <p tal:content="formular.description"> </p>
                 </blockquote>
-                <a class="offset2 btn btn-primary btn-large" tal:attributes="href obj.getAddLink()"> 
+                <a class="offset2 btn btn-primary btn-large" tal:attributes="href formular.getAddLink()"> 
                     Formular drucken 
                 </a>
             </div>
             <br> <br>
-<!--
             <div class="accordion">
-                <div class="accordion-group" tal:condition="obj">
+                <div class="accordion-group" tal:define="obj formular.getObject()" tal:condition="obj">
                     <div class="accordion-heading"> 
                         <span class="accordion-toggle"> Die Daten Ihres eingegangenen Dokuments </span>
                     </div>
@@ -59,7 +58,6 @@
                     </div>
                 </div>
             </div>
--->
         </div>
     </div>
 </div>

@@ -5,14 +5,13 @@
 import grok
 import uvcsite
 
-from zope.component import getUtility
 from dolmen.content import schema
 from zeam.form.base import DictDataManager
 from zope.dottedname.resolve import resolve
 from dolmen.forms.base import set_fields_data
 from uvcsite.content.views import Add, Display
 from zope.traversing.browser import absoluteURL
-from uvc.adhoc import getAdHocDocumentInfo, content
+from uvc.adhoc import content
 from hurry.workflow.interfaces import IWorkflowState
 from uvcsite.workflow.basic_workflow import titleForState
 from zope.authentication.interfaces import IUnauthenticatedPrincipal
@@ -61,7 +60,11 @@ class BaseAddView(Add):
         if content_object:
             obj = resolve(content_object)()
             set_fields_data(self.fields, obj, data)
+            self.setUid(obj)
             return obj
+
+    def setUid(self, obj):
+        pass
 
     def nextURL(self):
         self.flash(u'Ihr Formular ist erfolgreich bei uns eingegangen.')
@@ -115,8 +118,7 @@ class DisplayProductFolderListing(TablePage):
     grok.name('index')
     grok.context(IAdHocProductFolder)
 
-    cssClasses = {'table':
-        'tablesorter table table-striped table-bordered table-condensed'}
+    cssClasses = {'table': 'tablesorter table table-striped table-bordered table-condensed'}
 
 
 class Link(LinkColumn):
@@ -129,7 +131,7 @@ class Link(LinkColumn):
     def getLinkURL(self, item):
         """Setup link url."""
         state = IWorkflowState(item).getState()
-        if state != None:
+        if state is not None:
             state = titleForState(state)
         if self.linkName is not None and state == "Entwurf":
             return '%s/%s' % (absoluteURL(item, self.request), self.linkName)
@@ -176,6 +178,6 @@ class StateColumn(GetAttrColumn):
 
     def getValue(self, obj):
         state = IWorkflowState(obj).getState()
-        if state != None:
+        if state is not None:
             return titleForState(state)
         return self.defaultValue

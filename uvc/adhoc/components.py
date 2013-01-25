@@ -11,13 +11,18 @@ from uvc.adhoc import IAdHocContent, IAdHocProductFolder
 class AdHocContent(uvcsite.Content):
     grok.implements(IAdHocContent)
 
-    def get_principal_id(self):
-        return int(self.principal.id)
+    def get_uid(self):
+        return int(self._uid)
 
-    def set_principal_id(self, full_name):
-        return int(self.principal.id)
+    def set_uid(self, uid):
+        self._uid = int(uid)
+        return self._uid
 
-    principal_id = property(get_principal_id, set_principal_id)
+    uid = property(get_uid, set_uid)
+
+    @property
+    def container_id(self):
+        return "%s%s" % (self.principal.id, self.uid)
 
 
 class AdHocProductFolder(grok.Container):
@@ -30,4 +35,4 @@ class AdHocProductFolder(grok.Container):
         return "RUMS"
 
     def add(self, content):
-        self[content.principal.id] = content
+        self[content.container_id] = content

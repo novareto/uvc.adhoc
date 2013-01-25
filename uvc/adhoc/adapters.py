@@ -24,7 +24,7 @@ class AdHocManagement(grok.Adapter):
         return {}
 
     def getFormulare(self):
-        ahms = self.getUser().get('documents', [])
+        ahms = self.getUser(self.context.id).get('documents', [])
         request = uvcsite.utils.shorties.getRequest()
         for ahm in ahms:
             ahfm = getAdHocDocumentInfo(self.context, request, ahm, name=ahm.get('docart'))
@@ -43,7 +43,6 @@ class AdHocManagement(grok.Adapter):
             return self.context.id
         username = daten.get('clearname')
         return username or self.request.principal.id
-
 
 
 def getAdHocDocumentInfo(principal, request, ahm, name):
@@ -77,11 +76,11 @@ class AdHocDocumentInfo(grok.MultiAdapter):
             return grok.url(self.request, obj)
         datefolder = self.getProductFolder()
         addlink = "@@%s" % (
-            self.ahm.get('docart').replace(' ', '_').lower())
+            self.ahm.get('docart').replace(' ', '_'))
         return grok.url(self.request, datefolder, addlink)
 
     def getObject(self):
         util = getUtility(IAdHocIdReference)
-        if not self.principal.id.isdigit():
+        if not self.ahm.get('id').isdigit():
             return
-        return util.queryObject(int(self.principal.id))
+        return util.queryObject(int(self.ahm.get('id')))
