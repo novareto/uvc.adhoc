@@ -32,7 +32,7 @@ class AdHocProductFolder(grok.Container):
         return
 
     def getContentName(self):
-        return "RUMS"
+        return ""
 
     def add(self, content):
         self[content.container_id] = content

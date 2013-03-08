@@ -17,47 +17,21 @@
                     Formular ausfüllen & absenden 
                 </a>
             </div>
-            <div class="offset1" id="lpcontent" tal:condition="formular.getObject()">
+            <div class="offset1" id="lpcontent" tal:define="obj formular.getObject()" tal:condition="obj">
                 <a href="" tal:attributes="href formular.getAddLink()">
                     <img class="landingimage" tal:attributes="src formular.icon" />
                 </a>
                 <blockquote class="startquote">
-                    <h3> Vielen Dank, ihr Formualr ist bereits bei uns eingegangen </h3>
                     <h3 tal:content="formular.title"> </h3>
-                    <p tal:content="formular.description"> </p>
+                    <h5> Vielen Dank, dieses Formular ist bereits am <span tal:replace="obj.modtime.strftime('%d.%m.%Y')"> bei uns eingegangen. </h5>
+                    <p> Um weitere Details zu sehen klicken Sie auf die Schaltfläche 'Formular drucken'. </p>
+                    <!-- <p tal:content="formular.description"> </p> -->
                 </blockquote>
                 <a class="offset2 btn btn-primary btn-large" tal:attributes="href formular.getAddLink()"> 
                     Formular drucken 
                 </a>
             </div>
             <br> <br>
-            <div class="accordion">
-                <div class="accordion-group" tal:define="obj formular.getObject()" tal:condition="obj">
-                    <div class="accordion-heading"> 
-                        <span class="accordion-toggle"> Die Daten Ihres eingegangenen Dokuments </span>
-                    </div>
-                    <div class="accordion-body">
-                        <div class="accordion-inner">
-                            <table class="table table-striped" >
-                                <tbody>
-                                    <tr> 
-                                        <th> Titel </th> 
-                                        <td tal:content="obj.title"> </td>
-                                    </tr>
-                                    <tr>
-                                        <th> Datum </th>
-                                        <td tal:content="obj.modtime.strftime('%d.%m.%Y')"> </td>
-                                    </tr>
-                                    <tr> 
-                                        <th> Status </th>
-                                        <td> GESENDET </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </div>
