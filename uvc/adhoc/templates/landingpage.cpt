@@ -1,37 +1,44 @@
 <link type="text/css" rel="stylesheet" tal:attributes="href static['landing.css']"/>
 
 <div id="landingpage">
-    <div class="hero-unit">
-        <h1 tal:content="view.title">Heading</h1>
-        <p tal:content="view.description"></p>
-        <div tal:repeat="formular view.getFormulare()">
-            <div class="offset1" id="lpcontent" tal:condition="not: formular.getObject()">
-                <a href="" tal:attributes="href formular.getAddLink()">
-                    <img class="landingimage" tal:attributes="src formular.icon" />
-                </a>
-                <blockquote class="startquote">
-                    <h3 tal:content="formular.title"> </h3>
-                    <p tal:content="formular.description"> </p>
-                </blockquote>
-                <a class="offset2 btn btn-primary btn-large" tal:attributes="href formular.getAddLink()"> 
-                    Formular ausfüllen & absenden 
-                </a>
-            </div>
-            <div class="offset1" id="lpcontent" tal:define="obj formular.getObject()" tal:condition="obj">
-                <a href="" tal:attributes="href formular.getAddLink()">
-                    <img class="landingimage" tal:attributes="src formular.icon" />
-                </a>
-                <blockquote class="startquote">
-                    <h3 tal:content="formular.title"> </h3>
-                    <h5> Vielen Dank, dieses Formular ist bereits am <span tal:replace="obj.modtime.strftime('%d.%m.%Y')"> bei uns eingegangen. </h5>
-                    <p> Um weitere Details zu sehen klicken Sie auf die Schaltfläche 'Formular drucken'. </p>
-                    <!-- <p tal:content="formular.description"> </p> -->
-                </blockquote>
-                <a class="offset2 btn btn-primary btn-large" tal:attributes="href formular.getAddLink()"> 
-                    Formular drucken 
-                </a>
-            </div>
-            <br> <br>
-        </div>
-    </div>
+  <div class="herounit">
+    <h2 tal:content="view.title">Heading</h2>
+    <p tal:content="view.description"></p>
+    <table class="table table-striped table-bordered">
+      <thead>
+        <tr>
+          <th>Dokumentname</th>
+          <th>Beschreibung</th>
+          <th>Status</th>
+          <th>Aktion</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr tal:repeat="formular view.getFormulare()">
+          <s tal:define="obj formular.getObject()" tal:condition="obj">
+            <td tal:content="formular.title"> </td>
+            <td tal:content="formular.description"> </td>
+            <td>
+              eingegangen am: <span tal:replace="obj.modtime.strftime('%d.%m.%Y')"> </span>
+            </td>
+            <td>
+              <a class="btn btn-primary btn-small" tal:attributes="href formular.getAddLink()"> 
+                Formular drucken 
+              </a>
+            </td>
+          </s>
+          <s tal:define="obj formular.getObject()" tal:condition="not: obj">
+            <td tal:content="formular.title"> </td>
+            <td tal:content="formular.description"> </td>
+            <td> offen </td>
+            <td>
+              <a class="btn btn-primary btn-small" tal:attributes="href formular.getAddLink()"> 
+                Formular bearbeiten und senden 
+              </a>
+            </td>
+          </s>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

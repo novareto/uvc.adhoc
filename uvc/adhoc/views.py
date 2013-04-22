@@ -27,8 +27,8 @@ class LandingPage(uvcsite.Page):
     grok.name('index')
     grok.context(IAdHocApplication)
 
-    title = u"Willkommen im AdHocManagement"
-    description = u"Beschreibung Beschreibung"
+    title = u"Willkommen im Extranet für Versicherte"
+    description = u"Hier können Sie schnell und einfach die Korrespondenz mit dem Unfallversicherungsträger bearbeiten."
 
     def getFormulare(self):
         return IAdHocManagement(self.request.principal).getFormulare()
@@ -40,10 +40,15 @@ class BaseAddView(Add):
     grok.baseclass()
 
     ignoreContent = False
+    ignoreRequest = False
 
     @property
     def defaults(self):
-        return IAdHocManagement(self.request.principal).getFormularById(grok.name.bind().get(self)).ahm.get('defaults', {})
+        docid = self.request.get('form.field.docid')
+        formular_info =  IAdHocManagement(self.request.principal).getFormularById(docid)
+        if formular_info:
+            return formular_info.ahm.get('defaults', {})
+        return {}
 
     @property
     def fields(self):
@@ -60,11 +65,7 @@ class BaseAddView(Add):
         if content_object:
             obj = resolve(content_object)()
             set_fields_data(self.fields, obj, data)
-            self.setUid(obj)
             return obj
-
-    def setUid(self, obj):
-        pass
 
     def nextURL(self):
         self.flash(u'Ihr Formular ist erfolgreich bei uns eingegangen.')

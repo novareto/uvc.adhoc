@@ -5,9 +5,11 @@
 import grok
 import uvcsite
 
+from zope.schema import TextLine
 from uvc.tbskin.skin import ITBSkin
 from zope.interface import Interface
 from zope.container.interfaces import IContainer
+from bgetem.bsskin.layout import IBETEMSkin, IBGETEMLayer
 
 
 class IAdHocIdReference(Interface):
@@ -20,12 +22,12 @@ class IAdHocApplication(Interface):
     """
 
 
-class IAdHocLayer(Interface):
+class IAdHocLayer(IBGETEMLayer):
     """ Layer which is applied to AdHoc Applications
     """
 
 
-class IAdHocSkin(IAdHocLayer, ITBSkin):
+class IAdHocSkin(IAdHocLayer, IBETEMSkin):
     """ Skin for IADHocApplications
     """
     grok.skin('adhoc')
@@ -58,6 +60,7 @@ class IAdHocManagement(Interface):
 class IAdHocContent(uvcsite.IContent):
     """ Marker Interface for AdHoc Content Types
     """
+    docid = TextLine(title=u'docid')
 
 
 class IAdHocProductFolder(IContainer):

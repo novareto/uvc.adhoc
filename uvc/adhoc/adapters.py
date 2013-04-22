@@ -32,7 +32,7 @@ class AdHocManagement(grok.Adapter):
 
     def getFormularById(self, id):
         for ahm in self.getFormulare():
-            if grok.name.bind().get(ahm) == id:
+            if ahm.ahm.get('id') == id:
                 return ahm
         return
 
@@ -54,10 +54,6 @@ class AdHocDocumentInfo(grok.MultiAdapter):
     grok.implements(IAdHocDocumentInfo)
     grok.baseclass()
 
-    #icon = u""
-    #title = u""
-    #description = u""
-
     def __init__(self, principal, request, ahm):
         self.principal = principal
         self.request = request
@@ -75,9 +71,10 @@ class AdHocDocumentInfo(grok.MultiAdapter):
         if obj:
             return grok.url(self.request, obj)
         datefolder = self.getProductFolder()
+        data = {'form.field.docid': self.ahm.get('id')}
         addlink = "@@%s" % (
             self.ahm.get('docart').replace(' ', '_'))
-        return grok.url(self.request, datefolder, addlink)
+        return grok.url(self.request, datefolder, addlink, data=data)
 
     def getObject(self):
         util = getUtility(IAdHocIdReference)
