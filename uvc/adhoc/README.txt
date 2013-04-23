@@ -51,6 +51,7 @@ IAdHocUserManagement
   ...             documents=[
   ...               dict(
   ...                     docart='wiederaufnahmearbeit',
+  ...                     id="4711",
   ...                     defaults={'title': 'Wiederaufnahme Arbeitsfähigkeit'},
   ...                   ),
   ...              ]
@@ -67,7 +68,8 @@ IAdHocUserManagement
   {'az': '12345678',
    'clearname': u'Christian Klinger',
    'documents': [{'defaults': {'title': 'Wiederaufnahme Arbeitsf\xc3\xa4higkeit'},
-                  'docart': 'wiederaufnahmearbeit'}],
+                  'docart': 'wiederaufnahmearbeit',
+                  'id': '4711'}],
    'passwort': 'passwort'}
 
 
@@ -105,7 +107,7 @@ IAdHocUserManagement
   0
 
   >>> adhocuserinfo.getAddLink()
-  'http://127.0.0.1/app/dokumente/.../@@wiederaufnahmearbeit'
+  'http://127.0.0.1/app/dokumente/.../@@wiederaufnahmearbeit?form.field.docid=4711'
 
 
 Content
@@ -116,7 +118,14 @@ Content
   >>> waa
   <uvc.adhoc.components.AdHocContent object at ...>
 
+Setting the Docid this is normally done automaitcally  
+  >>> docid = "4711"
+  >>> waa.docid = "4711"
+
   >>> IAdHocContent.providedBy(waa)
+  True
+
+  >>> waa.container_id == request.principal.id + docid
   True
 
   >>> p_folder.add(waa)
@@ -124,7 +133,9 @@ Content
   >>> len(p_folder)
   1
 
-  >>> p_folder.get(request.principal.id)
+
+
+  >>> p_folder.get(waa.container_id)
   <uvc.adhoc.components.AdHocContent object at ...>
 
 
@@ -156,7 +167,7 @@ IntIds
   >>> from zope.component import getUtility
   >>> from uvc.adhoc.interfaces import IAdHocIdReference 
   >>> refs = getUtility(IAdHocIdReference)
-  >>> ref_obj = refs.queryObject(int(request.principal.id))
+  >>> ref_obj = refs.queryObject(int(docid))
   >>> ref_obj
   <uvc.adhoc.components.AdHocContent object at 0...>
 
