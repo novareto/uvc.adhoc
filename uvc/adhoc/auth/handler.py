@@ -43,7 +43,7 @@ class AdHocAuthenticator(grok.Model):
             if not user:
                 return
 
-            if password != user.get('passwort'):
+            if not utility.validatePassword(password, user.get('password')):
                 return
             user_id = login
             authenticated = session[USER_SESSION_KEY] = dict(

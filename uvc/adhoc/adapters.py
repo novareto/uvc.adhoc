@@ -23,6 +23,11 @@ class AdHocManagement(grok.Adapter):
     def getUser(self):
         return {}
 
+    def validatePassword(self, given_password, saved_password):
+        if given_password == saved_password:
+            return True
+        return False
+
     def getFormulare(self):
         ahms = self.getUser(self.context.id).get('documents', [])
         request = uvcsite.utils.shorties.getRequest()
