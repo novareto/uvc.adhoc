@@ -15,24 +15,24 @@
       </thead>
       <tbody>
         <tr tal:repeat="formular view.getFormulare()">
-          <s tal:define="obj formular.getObject()" tal:condition="obj">
+          <s tal:define="obj formular.getObject" tal:condition="obj">
             <td tal:content="formular.title"> </td>
             <td tal:content="formular.description"> </td>
             <td>
               eingegangen am: <span tal:replace="obj.modtime.strftime('%d.%m.%Y')"> </span>
             </td>
             <td>
-              <a class="btn btn-primary btn-small" tal:attributes="href formular.getAddLink()"> 
+              <a class="btn btn-primary btn-small" tal:attributes="href formular.addlink"> 
                 Formular drucken 
               </a>
             </td>
           </s>
-          <s tal:define="obj formular.getObject()" tal:condition="not: obj">
+          <s tal:define="obj formular.getObject" tal:condition="not: obj">
             <td tal:content="formular.title"> </td>
             <td tal:content="formular.description"> </td>
             <td> offen </td>
             <td>
-              <a class="btn btn-primary btn-small" tal:attributes="href formular.getAddLink()"> 
+              <a class="btn btn-primary btn-small" tal:attributes="href formular.addlink"> 
                 Formular bearbeiten und senden 
               </a>
             </td>

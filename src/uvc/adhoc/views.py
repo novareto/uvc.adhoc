@@ -18,6 +18,7 @@ from zope.authentication.interfaces import IUnauthenticatedPrincipal
 from megrok.z3ctable import TablePage, Column, GetAttrColumn, LinkColumn
 from uvc.adhoc import IAdHocProductFolder, IAdHocApplication, IAdHocContent
 from .interfaces import IAdHocManagement
+from .resources import css
 
 
 grok.templatedir('templates')
@@ -45,9 +46,9 @@ class BaseAddView(Add):
     @property
     def defaults(self):
         docid = self.request.get('form.field.docid')
-        formular_info = IAdHocManagement(self.request.principal).getFormularById(docid)
+        formular_info = IAdHocManagement(self.request.principal).getFormulare(id=docid)
         if formular_info:
-            return formular_info.ahm.get('defaults', {})
+            return formular_info.defaults
         return {}
 
     @property
@@ -57,6 +58,7 @@ class BaseAddView(Add):
         return uvcsite.Fields(*schemas)
 
     def update(self):
+        css.need()
         self.setContentData(
             DictDataManager(self.defaults))
 

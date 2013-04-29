@@ -42,6 +42,7 @@ Setup
 
 
 IAdHocUserManagement
+
 --------------------
 
   >>> class MyAdHocManagement(AdHocManagement):
@@ -79,7 +80,7 @@ IAdHocUserManagement
   [<Formular id=4711 type=lv1101>]
 
   >>> ahm.getFormulare(id="4711")
-  [<Formular id=4711 type=lv1101>]
+  <Formular id=4711 type=lv1101>
 
   >>> ahm.getFormulare(type="lv1101")
   [<Formular id=4711 type=lv1101>]
@@ -126,7 +127,7 @@ IAdHocUserManagement
 Formular
 --------
 
-  >>> formular = ahm.getFormulare(id="4711")[0]
+  >>> formular = ahm.getFormulare(id="4711")
   >>> formular
   <Formular id=4711 type=lv1101>
 

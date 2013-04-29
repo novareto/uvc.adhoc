@@ -15,6 +15,7 @@ from uvc.adhoc import AdHocProductFolder, IAdHocIdReference
 
 
 class Formular(object):
+    defaults = {}
 
     def __init__(self, id, type, **kwargs):
         self.id = id
@@ -34,6 +35,18 @@ class Formular(object):
     @property
     def productfolder(self):
         return self.info.getProductFolder()
+
+    @property
+    def getObject(self):
+        return self.info.getObject(self.id)
+
+    @property
+    def title(self):
+        return self.info.title
+
+    @property
+    def description(self):
+        return self.info.description
 
     def __repr__(self):
         return "<Formular id=%s type=%s>" % (self.id, self.type)
@@ -63,7 +76,7 @@ class AdHocManagement(grok.Adapter):
             )
             if id:
                 if formular.get('id') == id:
-                    rc.append(fc)
+                    return fc
             elif type:
                 if formular.get('type') == type:
                     rc.append(fc)
