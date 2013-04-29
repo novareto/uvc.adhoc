@@ -15,12 +15,37 @@ from zope.publisher.interfaces.http import IHTTPRequest
 from uvc.adhoc import AdHocProductFolder, IAdHocIdReference
 
 
+class Formular(object):
+
+    def __init__(self, id, type, **kwargs):
+        self.id = id
+        self.type = type
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
+    @property
+    def info(self):
+        request = uvcsite.getRequest()
+        return getAdHocDocumentInfo(request.principal, request, self.type)
+
+    @property
+    def addlink(self):
+        return self.info.getAddLink(self.id, self.type)
+
+    @property
+    def productfolder(self):
+        return self.info.getProductFolder()
+
+    def __repr__(self):
+        return "<Formular id=%s type=%s>" % (self.id, self.type)
+
+
 class AdHocManagement(grok.Adapter):
     grok.context(IPrincipal)
     grok.implements(IAdHocManagement)
     grok.baseclass()
 
-    def getUser(self):
+    def getData(self):
         return {}
 
     def validatePassword(self, given_password, saved_password):
@@ -28,18 +53,24 @@ class AdHocManagement(grok.Adapter):
             return True
         return False
 
-    def getFormulare(self):
-        ahms = self.getUser(self.context.id).get('documents', [])
-        request = uvcsite.utils.shorties.getRequest()
-        for ahm in ahms:
-            ahfm = getAdHocDocumentInfo(self.context, request, ahm, name=ahm.get('docart'))
-            yield ahfm
-
-    def getFormularById(self, id):
-        for ahm in self.getFormulare():
-            if ahm.ahm.get('id') == id:
-                return ahm
-        return
+    def getFormulare(self, id=None, type=None):
+        rc = []
+        formulare = self.getData().get('formulare', [])
+        for formular in formulare:
+            fc = Formular(
+                id=formular.get('id'),
+                type=formular.get('type'),
+                defaults=formular.get('defaults'),
+            )
+            if id:
+                if formular.get('id') == id:
+                    rc.append(fc)
+            elif type:
+                if formular.get('type') == type:
+                    rc.append(fc)
+            else:
+                rc.append(fc)
+        return rc
 
     @property
     def clearname(self):
@@ -50,19 +81,18 @@ class AdHocManagement(grok.Adapter):
         return username or self.request.principal.id
 
 
-def getAdHocDocumentInfo(principal, request, ahm, name):
-    return getMultiAdapter((principal, request, ahm), IAdHocDocumentInfo, name=name)
+def getAdHocDocumentInfo(principal, request, name):
+    return getMultiAdapter((principal, request), IAdHocDocumentInfo, name=name)
 
 
 class AdHocDocumentInfo(grok.MultiAdapter):
-    grok.adapts(IPrincipal, IHTTPRequest, Interface)
+    grok.adapts(IPrincipal, IHTTPRequest)
     grok.implements(IAdHocDocumentInfo)
     grok.baseclass()
 
-    def __init__(self, principal, request, ahm):
+    def __init__(self, principal, request):
         self.principal = principal
         self.request = request
-        self.ahm = ahm
 
     def getProductFolder(self):
         base = grok.getSite()['dokumente']
@@ -71,18 +101,19 @@ class AdHocDocumentInfo(grok.MultiAdapter):
             base[folder_name] = AdHocProductFolder()
         return base[folder_name]
 
-    def getAddLink(self):
-        obj = self.getObject()
+    def getAddLink(self, id, docart):
+        obj = self.getObject(id)
         if obj:
             return grok.url(self.request, obj)
         datefolder = self.getProductFolder()
-        data = {'form.field.docid': self.ahm.get('id')}
+        data = {'form.field.docid': id}
         addlink = "@@%s" % (
-            self.ahm.get('docart').replace(' ', '_'))
+            docart.replace(' ', '_'))
         return grok.url(self.request, datefolder, addlink, data=data)
 
-    def getObject(self):
+    def getObject(self, id):
         util = getUtility(IAdHocIdReference)
-        if not self.ahm.get('id').isdigit():
-            return
-        return util.queryObject(int(self.ahm.get('id')))
+        if not isinstance(id, int):
+            if not id.isdigit():
+                return
+        return util.queryObject(int(id))

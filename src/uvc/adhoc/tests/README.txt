@@ -6,6 +6,7 @@ uvc.adhoc
 
 :Test-Layer: functional
 
+
 Setup
 -----
 
@@ -39,18 +40,19 @@ Setup
   >>> from grokcore.component.testing import grok_component
   >>> from pprint import pformat
 
+
 IAdHocUserManagement
 --------------------
 
   >>> class MyAdHocManagement(AdHocManagement):
-  ...     def getUser(self):
+  ...     def getData(self):
   ...         return dict(
   ...             az="12345678",
   ...             passwort="passwort",
   ...             clearname=u"Christian Klinger",
-  ...             documents=[
+  ...             formulare=[
   ...               dict(
-  ...                     docart='wiederaufnahmearbeit',
+  ...                     type='lv1101',
   ...                     id="4711",
   ...                     defaults={'title': 'Wiederaufnahme Arbeitsfaehigkeit'},
   ...                   ),
@@ -64,17 +66,28 @@ IAdHocUserManagement
   >>> ahm
   <MyAdHocManagement object at 0x...>
 
-  >>> print pformat(ahm.getUser())
+  >>> print pformat(ahm.getData())
   {'az': '12345678',
    'clearname': u'Christian Klinger',
-   'documents': [{'defaults': {'title': 'Wiederaufnahme Arbeitsfaehigkeit'},
-                  'docart': 'wiederaufnahmearbeit',
-                  'id': '4711'}],
+   'formulare': [{'defaults': {'title': 'Wiederaufnahme Arbeitsfaehigkeit'},
+                  'id': '4711',
+                  'type': 'lv1101'}],
    'passwort': 'passwort'}
 
 
+  >>> ahm.getFormulare()
+  [<Formular id=4711 type=lv1101>]
+
+  >>> ahm.getFormulare(id="4711")
+  [<Formular id=4711 type=lv1101>]
+
+  >>> ahm.getFormulare(type="lv1101")
+  [<Formular id=4711 type=lv1101>]
+
+
+
   >>> class MyAdHocDocumentInfo(AdHocDocumentInfo):
-  ...     grok.name('wiederaufnahmearbeit')
+  ...     grok.name('lv1101')
   ...
   ...     @property
   ...     def formular_informationen(self):
@@ -89,7 +102,7 @@ IAdHocUserManagement
   True
 
   >>> from uvc.adhoc import IAdHocProductFolder
-  >>> adhocuserinfo = getAdHocDocumentInfo(christian, request, ahm.getUser()['documents'][0], "wiederaufnahmearbeit")
+  >>> adhocuserinfo = getAdHocDocumentInfo(christian, request, "lv1101")
   >>> adhocuserinfo
   <MyAdHocDocumentInfo object at ...>
 
@@ -106,8 +119,29 @@ IAdHocUserManagement
   >>> len(p_folder)
   0
 
-  >>> adhocuserinfo.getAddLink()
-  'http://127.0.0.1/app/dokumente/.../@@wiederaufnahmearbeit?form.field.docid=4711'
+  >>> adhocuserinfo.getAddLink(4711, 'lv1101')
+  'http://127.0.0.1/app/dokumente/.../@@lv1101?form.field.docid=4711'
+
+
+Formular
+--------
+
+  >>> formular = ahm.getFormulare(id="4711")[0]
+  >>> formular
+  <Formular id=4711 type=lv1101>
+
+  >>> formular.info
+  <MyAdHocDocumentInfo object at ...>
+
+  >>> formular.addlink
+  'http://127.0.0.1/app/dokumente/.../@@lv1101?form.field.docid=4711'
+
+  >>> product_folder = formular.productfolder
+  >>> product_folder
+  <uvc.adhoc.components.AdHocProductFolder object at ...>
+
+  >>> product_folder.__parent__
+  <uvc.adhoc.app.Dokumente object at 0...>
 
 
 Content
