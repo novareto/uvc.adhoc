@@ -6,7 +6,6 @@ import grok
 import time
 import uvcsite
 
-from zope.interface import Interface
 from zope.component import getUtility
 from zope.component import getMultiAdapter
 from uvc.adhoc.interfaces import IAdHocDocumentInfo, IAdHocManagement

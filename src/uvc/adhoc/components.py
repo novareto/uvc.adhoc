@@ -8,16 +8,6 @@ import uvcsite
 from uvc.adhoc import IAdHocContent, IAdHocProductFolder
 
 
-class Formular(object):
-
-    def __init__(self, id, docart, titel, beschreibung=u"", defaults={}):
-        self.id = id
-        self.docart = docart
-        self.titel = titel
-        self.beschreibung = beschreibung
-        self.defaults = defaults
-
-
 class AdHocContent(uvcsite.Content):
     grok.implements(IAdHocContent)
 

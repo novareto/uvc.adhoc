@@ -18,7 +18,7 @@ from zope.authentication.interfaces import IAuthentication
 adhocRegistry = create_components_registry(
     name="adhocRegistry",
     bases=(zope.component.globalSiteManager, ),
-    )
+)
 
 
 grok.global_utility(
@@ -26,13 +26,15 @@ grok.global_utility(
     name="adhocRegistry",
     provides=IComponents,
     direct=True,
-    )
+)
 
 
 def setup_pau(PAU):
     PAU.authenticatorPlugins = ('principals', )
-    PAU.credentialsPlugins = ("cookies",
-        "Zope Realm Basic-Auth", "No Challenge if Authenticated")
+    PAU.credentialsPlugins = (
+        "cookies",
+        "Zope Realm Basic-Auth",
+        "No Challenge if Authenticated")
 
 
 def intid_factory():
@@ -66,6 +68,6 @@ class AdHocApp(grok.Application, grok.Container):
     def getSiteManager(self):
         current = super(AdHocApp, self).getSiteManager()
         if adhocRegistry not in current.__bases__:
-             adhocRegistry.__bases__ = tuple([x for x in adhocRegistry.__bases__ if x.__hash__() != zope.component.globalSiteManager.__hash__()])
-             current.__bases__ += (adhocRegistry,)
+            adhocRegistry.__bases__ = tuple([x for x in adhocRegistry.__bases__ if x.__hash__() != zope.component.globalSiteManager.__hash__()])
+            current.__bases__ += (adhocRegistry,)
         return current
