@@ -1,3 +1,0 @@
-<h1> BLA </h1>
-
-<span tal:replace="structure view.renderTable()"/>
