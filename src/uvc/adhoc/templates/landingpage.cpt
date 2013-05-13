@@ -8,7 +8,6 @@
       <thead>
         <tr>
           <th>Dokumentname</th>
-          <th>Beschreibung</th>
           <th>Status</th>
           <th>Aktion</th>
         </tr>
@@ -17,7 +16,6 @@
         <tr tal:repeat="formular view.getFormulare()">
           <s tal:define="obj formular.getObject" tal:condition="obj">
             <td tal:content="formular.title"> </td>
-            <td tal:content="formular.description"> </td>
             <td>
               eingegangen am: <span tal:replace="obj.modtime.strftime('%d.%m.%Y')"> </span>
             </td>
@@ -29,7 +27,6 @@
           </s>
           <s tal:define="obj formular.getObject" tal:condition="not: obj">
             <td tal:content="formular.title"> </td>
-            <td tal:content="formular.description"> </td>
             <td> offen </td>
             <td>
               <a class="btn btn-primary btn-small" tal:attributes="href formular.addlink"> 
