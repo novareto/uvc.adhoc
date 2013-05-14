@@ -42,9 +42,9 @@ Setup
 
 
 IAdHocUserManagement
-
 --------------------
 
+  >>> from uvc.adhoc import Formular
   >>> class MyAdHocManagement(AdHocManagement):
   ...     def getData(self):
   ...         return dict(
@@ -59,6 +59,24 @@ IAdHocUserManagement
   ...                   ),
   ...              ]
   ...             ) 
+  ...     def getFormulare(self, id=None, type=None):
+  ...         rc = []
+  ...         formulare = self.getData().get('formulare', [])
+  ...         for formular in formulare:
+  ...             fc = Formular(
+  ...                 id=formular.get('id'),
+  ...                 type=formular.get('type'),
+  ...                 defaults=formular.get('defaults'),
+  ...             )
+  ...             if id:
+  ...                 if formular.get('id') == id:
+  ...                     return fc
+  ...             elif type:
+  ...                 if formular.get('type') == type:
+  ...                     rc.append(fc)
+  ...             else:
+  ...                 rc.append(fc)
+  ...         return rc
 
   >>> grok_component('MyAdHocManagement', MyAdHocManagement)
   True
