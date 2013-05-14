@@ -32,23 +32,6 @@ class AdHocManagement(grok.Adapter):
 
     def getFormulare(self, id=None, type=None):
         raise NotImplementedError
-        rc = []
-        formulare = self.getData().get('formulare', [])
-        for formular in formulare:
-            fc = Formular(
-                id=formular.get('id'),
-                type=formular.get('type'),
-                defaults=formular.get('defaults'),
-            )
-            if id:
-                if formular.get('id') == id:
-                    return fc
-            elif type:
-                if formular.get('type') == type:
-                    rc.append(fc)
-            else:
-                rc.append(fc)
-        return rc
 
     @property
     def clearname(self):
