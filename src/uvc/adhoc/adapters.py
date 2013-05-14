@@ -4,52 +4,14 @@
 
 import grok
 import time
-import uvcsite
 
 from zope.component import getUtility
 from zope.component import getMultiAdapter
 from uvc.adhoc.interfaces import IAdHocDocumentInfo, IAdHocManagement
 from zope.security.interfaces import IPrincipal
 from zope.publisher.interfaces.http import IHTTPRequest
-from uvc.adhoc import AdHocProductFolder, IAdHocIdReference
-
-
-class Formular(object):
-    defaults = {}
-
-    def __init__(self, id, type, **kwargs):
-        self.id = id
-        self.type = type
-        for key, value in kwargs.items():
-            setattr(self, key, value)
-
-    @property
-    def info(self):
-        request = uvcsite.getRequest()
-        return getAdHocDocumentInfo(request.principal, request, self.type)
-
-    @property
-    def addlink(self):
-        return self.info.getAddLink(self.id, self.type)
-
-    @property
-    def productfolder(self):
-        return self.info.getProductFolder()
-
-    @property
-    def getObject(self):
-        return self.info.getObject(self.id)
-
-    @property
-    def title(self):
-        return self.info.title
-
-    @property
-    def description(self):
-        return self.info.description
-
-    def __repr__(self):
-        return "<Formular id=%s type=%s>" % (self.id, self.type)
+from uvc.adhoc import IAdHocIdReference
+from uvc.adhoc.components import AdHocProductFolder, Formular
 
 
 class AdHocManagement(grok.Adapter):
@@ -60,12 +22,16 @@ class AdHocManagement(grok.Adapter):
     def getData(self):
         return {}
 
+    def checkRule(self, login):
+        return True
+
     def validatePassword(self, given_password, saved_password):
         if given_password == saved_password:
             return True
         return False
 
     def getFormulare(self, id=None, type=None):
+        raise NotImplementedError
         rc = []
         formulare = self.getData().get('formulare', [])
         for formular in formulare:
@@ -90,7 +56,7 @@ class AdHocManagement(grok.Adapter):
         if not daten:
             return self.context.id
         username = daten.get('clearname')
-        return username or self.request.principal.id
+        return username
 
 
 def getAdHocDocumentInfo(principal, request, name):
