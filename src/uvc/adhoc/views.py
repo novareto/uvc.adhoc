@@ -43,6 +43,13 @@ class BaseAddView(Add):
     ignoreContent = False
     ignoreRequest = False
 
+    actions = Add.actions.copy()
+
+    @uvcsite.action(u"Abbrechen")
+    def handle_cancel(self):
+        self.flash(u'Der Vorgang wurde abgebrochen.')
+        return self.redirect(self.application_url())
+
     @property
     def defaults(self):
         docid = self.request.get('form.field.docid')
