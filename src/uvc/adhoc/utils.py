@@ -28,7 +28,7 @@ class AdHocIdReference(persistent.Persistent):
         if family is not None:
             self.family = family
         self.attribute = attribute
-        self.refs = self.family.IO.BTree()
+        self.refs = self.family.OO.BTree()
 
     def __len__(self):
         return len(self.refs)
@@ -52,7 +52,7 @@ class AdHocIdReference(persistent.Persistent):
         uid = getattr(unwrapped, self.attribute, None)
         if uid is None:
             raise KeyError(ob)
-        return int(uid)
+        return uid
 
     def register(self, ob):
         ob = unwrap(ob)

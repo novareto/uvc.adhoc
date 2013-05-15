@@ -1,0 +1,29 @@
+TEST UTILITY
+============
+
+  >>> from uvc.adhoc.app import AdHocApp
+  >>> root = getRootFolder()
+  >>> root['app'] = app = AdHocApp()
+
+  >>> app
+  <uvc.adhoc.app.AdHocApp object at 0...>
+
+  >>> ids = app.get('AdHocIdReference')
+  >>> ids
+  <uvc.adhoc.utils.AdHocIdReference object at 0...>
+
+  >>> class MyOBJ(object):
+  ...     def __init__(self, docid):
+  ...         self.docid = docid
+
+  >>> obj1 = MyOBJ(docid='klaus')
+  >>> uid = ids.register(obj1)
+  >>> uid
+  'klaus'
+
+  >>> objn = ids.getObject('klaus')
+  >>> objn
+  <MyOBJ object at 0...>
+
+  >>> obj1 is objn
+  True

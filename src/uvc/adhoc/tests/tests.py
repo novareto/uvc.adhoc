@@ -36,7 +36,7 @@ def test_suite():
     suite = unittest.TestSuite()
 
     app_test = doctest.DocFileSuite(
-        'README.txt',
+        'README.txt', 'UTILITY.txt',
         optionflags=(
             doctest.ELLIPSIS +
             doctest.NORMALIZE_WHITESPACE +
