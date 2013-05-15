@@ -14,6 +14,7 @@ class Formular(object):
     def __init__(self, id, type, **kwargs):
         self.id = id
         self.type = type
+        self.datum = ""
         for key, value in kwargs.items():
             setattr(self, key, value)
 
