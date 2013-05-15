@@ -74,7 +74,4 @@ class AdHocDocumentInfo(grok.MultiAdapter):
 
     def getObject(self, id):
         util = getUtility(IAdHocIdReference)
-        if not isinstance(id, int):
-            if not id.isdigit():
-                return
-        return util.queryObject(int(id))
+        return util.queryObject(id)
