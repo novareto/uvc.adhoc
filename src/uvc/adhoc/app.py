@@ -5,6 +5,7 @@
 import grok
 import zope.component
 
+from uvcsite.app import UvcRadioFieldWidget, UvcMultiChoiceFieldWidget
 from uvc.adhoc.utils import AdHocIdReference
 from zope.component.interfaces import IComponents
 from uvc.adhoc.auth.handler import AdHocAuthenticator
@@ -13,6 +14,11 @@ from grokcore.registries import create_components_registry
 from uvc.adhoc.interfaces import IAdHocApplication, IAdHocIdReference
 from zope.pluggableauth.interfaces import IAuthenticatorPlugin
 from zope.authentication.interfaces import IAuthentication
+from zeam.form.ztk import customize
+from zope.schema.interfaces import IDate
+from zeam.form.ztk.widgets.choice import ChoiceField
+from .interfaces import IAdHocLayer
+from zope.interface import Interface
 
 
 adhocRegistry = create_components_registry(
@@ -71,3 +77,16 @@ class AdHocApp(grok.Application, grok.Container):
             adhocRegistry.__bases__ = tuple([x for x in adhocRegistry.__bases__ if x.__hash__() != zope.component.globalSiteManager.__hash__()])
             current.__bases__ += (adhocRegistry,)
         return current
+
+
+@customize(origin=IDate)
+def customize_size(field):
+    field.valueLength = 'medium'
+
+
+class UvcRadioFieldWidget(UvcRadioFieldWidget):
+    grok.adapts(ChoiceField, Interface, IAdHocLayer)
+
+
+class UvcMultiChoiceFieldWidget(UvcMultiChoiceFieldWidget):
+    grok.adapts(ChoiceField, Interface, IAdHocLayer)
