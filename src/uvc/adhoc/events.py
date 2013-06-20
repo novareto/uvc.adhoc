@@ -6,7 +6,7 @@ import grok
 
 from uvc.adhoc import IAdHocContent
 from zope.component import getUtility
-from uvc.adhoc.interfaces import IAdHocSkin
+from uvc.adhoc.interfaces import IAdHocSkin, IAdHocContent
 from zope.publisher.browser import applySkin
 from uvc.adhoc.interfaces import IAdHocIdReference
 from uvc.adhoc.interfaces import IAdHocApplication

@@ -34,6 +34,8 @@ class LandingPage(uvcsite.Page):
     def getFormulare(self):
         return IAdHocManagement(self.request.principal).getFormulare()
 
+from zeam.form.base.interfaces import IError
+from zeam.form.base.errors import Errors, Error
 
 class BaseAddView(Add):
     grok.context(IAdHocProductFolder)
