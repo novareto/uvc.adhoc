@@ -1,0 +1,7 @@
+<ul tal:attributes="id viewlet.id" class="nav nav-tabs">
+  <li tal:repeat="menu viewlet.menus" tal:attributes="id menu['id']">
+    <a href=""
+       tal:attributes="href menu['action']"
+       tal:content="structure menu['title']" />
+  </li>
+</ul>

@@ -96,7 +96,7 @@ class BaseView(Display):
 
 class LogoutMenu(uvcsite.MenuItem):
     grok.name('Logout')
-    grok.title('Logout')
+    grok.title('Abmelden')
     grok.require('zope.View')
     grok.viewletmanager(uvcsite.IPersonalPreferences)
 
