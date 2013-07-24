@@ -78,7 +78,9 @@ class AdHocApp(grok.Application, grok.Container):
         if adhocRegistry not in current.__bases__:
             adhocRegistry.__bases__ = tuple([x for x in adhocRegistry.__bases__ if x.__hash__() != zope.component.globalSiteManager.__hash__()])
             current.__bases__ = (adhocRegistry,) + current.__bases__ 
-        current.__bases__ = current.__bases__[::-1]
+        else:
+            if current.__bases__.index(adhocRegistry) == 1:
+                current.__bases__ = current.__bases__[::-1]
         return current
 
 
