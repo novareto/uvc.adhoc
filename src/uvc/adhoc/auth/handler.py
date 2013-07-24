@@ -5,10 +5,14 @@
 import grok
 import zope.security
 
-from uvc.adhoc.interfaces import IAdHocManagement
+from zope.component import getUtility
+from uvc.adhoc.interfaces import IAdHocManagement, IAdHocApplication
 from zope.session.interfaces import ISession
-from zope.pluggableauth.factories import PrincipalInfo
+from zope.pluggableauth.factories import PrincipalInfo, Principal
 from zope.pluggableauth.interfaces import IAuthenticatorPlugin
+from dolmen.authentication import UserLoginEvent
+from zope.event import notify
+
 
 
 USER_SESSION_KEY = "adhoc.authentication"
@@ -57,3 +61,18 @@ class AdHocAuthenticator(grok.Model):
         """we don´t need this method"""
         if id.startswith('uvc.'):
             return PrincipalInfo(id, id, id, id)
+
+
+class CheckRemote(grok.XMLRPC):
+    grok.context(IAdHocApplication)
+
+    def checkAuth(self, user, password):
+        plugin = getUtility(IAuthenticatorPlugin, 'principals')
+        principal = plugin.authenticateCredentials(dict(
+            login=user,
+            password=password))
+        if principal:
+            notify(UserLoginEvent(Principal(user)))
+            return 1
+        return 0
+

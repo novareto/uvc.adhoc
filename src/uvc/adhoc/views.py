@@ -114,15 +114,18 @@ class Logout(grok.View):
     grok.context(IAdHocApplication)
     grok.viewletmanager(uvcsite.IPersonalPreferences)
 
-    KEYS = ("beaker.session", "dolmen.authcookie")
+    KEYS = ("beaker.session", "dolmen.authcookie", "auth_pubtkt")
 
     def update(self):
         if not IUnauthenticatedPrincipal.providedBy(self.request.principal):
             for key in self.KEYS:
+                self.request.response.expireCookie(key, path='/', domain="bgetem.de")
                 self.request.response.expireCookie(key, path='/')
+            self.request.response.expireCookie('beaker.session.id', path='/')
+            self.request['beaker.session'].delete()
 
     def render(self):
-        return self.redirect(self.application_url())
+        return self.redirect('https://extranet-weblogin.bgetem.de/logout', trusted=True)
 
 
 class DisplayProductFolderListing(TablePage):
