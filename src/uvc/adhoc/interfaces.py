@@ -9,8 +9,8 @@ from zope.schema import TextLine
 from uvc.tbskin.skin import ITBSkin
 from zope.interface import Interface
 from zope.container.interfaces import IContainer
-from bgetem.bsskin.layout import IBETEMSkin
-from bgetem.bsskin.layout import IBGETEMLayer
+from zope.publisher.interfaces.browser import IDefaultBrowserLayer
+
 
 class IAdHocIdReference(Interface):
     """ Marker Interface for a kind of IntID Utility
@@ -22,12 +22,12 @@ class IAdHocApplication(Interface):
     """
 
 
-class IAdHocLayer(Interface, IBGETEMLayer):
+class IAdHocLayer(IDefaultBrowserLayer):
     """ Layer which is applied to AdHoc Applications
     """
 
 
-class IAdHocSkin(IAdHocLayer, IBETEMSkin):
+class IAdHocSkin(IAdHocLayer):
     """ Skin for IADHocApplications
     """
     grok.skin('adhoc')

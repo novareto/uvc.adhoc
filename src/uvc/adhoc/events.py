@@ -16,11 +16,6 @@ from zope.app.publication.interfaces import IBeforeTraverseEvent
 from zope.securitypolicy.interfaces import IPrincipalPermissionManager
 
 
-@grok.subscribe(IAdHocApplication, IBeforeTraverseEvent)
-def handle(obj, event):
-    applySkin(event.request, IAdHocSkin)
-
-
 @grok.subscribe(IAdHocContent, grok.IObjectAddedEvent)
 def handle_add(obj, event):
     refs = getUtility(IAdHocIdReference)
