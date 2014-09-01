@@ -132,6 +132,7 @@ class DisplayProductFolderListing(TablePage):
     grok.title(u'AdHoc Objekte')
     grok.name('index')
     grok.context(IAdHocProductFolder)
+    grok.require('zope.ManageApplication')
 
     cssClasses = {'table': 'tablesorter table table-striped table-bordered table-condensed'}
 
