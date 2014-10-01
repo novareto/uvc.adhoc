@@ -1,3 +1,8 @@
 div#field-form-field-docid {
   visibility: hidden;
+  margin-bottom: 0px;
+}
+
+div#field-form-field-title {
+  margin-bottom: 0px;
 }

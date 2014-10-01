@@ -14,7 +14,7 @@
       </thead>
       <tbody>
         <tr tal:repeat="formular view.getFormulare()">
-          <s tal:define="obj formular.getObject" tal:condition="obj">
+          <si tal:define="obj formular.getObject" tal:condition="obj">
             <td tal:content="formular.title"> </td>
             <td>
               versendet am <span tal:replace="obj.modtime.strftime('%d.%m.%Y')"> </span>
@@ -24,8 +24,8 @@
                 Formular drucken 
               </a>
             </td>
-          </s>
-          <s tal:define="obj formular.getObject" tal:condition="not: obj">
+          </si>
+          <si tal:define="obj formular.getObject" tal:condition="not: obj">
             <td tal:content="formular.title"> </td>
             <td> 
               bereitgestellt am <span tal:content="formular.datum"></span>
@@ -35,7 +35,7 @@
                 Formular bearbeiten und senden 
               </a>
             </td>
-          </s>
+          </si>
         </tr>
       </tbody>
     </table>
