@@ -60,6 +60,12 @@ class IAdHocManagement(Interface):
 class IAdHocContent(uvcsite.IContent):
     """ Marker Interface for AdHoc Content Types
     """
+    title = TextLine(
+        title = u"Titel",
+        description = u"Dieses Dokument erscheint dann unter dem Titel in Mein Ordner.",
+        readonly = True,
+        required = True)
+
     docid = TextLine(title=u'docid')
 
 
