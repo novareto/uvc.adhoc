@@ -41,6 +41,7 @@ class BaseAddView(Add):
     grok.context(IAdHocProductFolder)
     grok.require('zope.View')
     grok.baseclass()
+    description = ""
 
     ignoreContent = False
     ignoreRequest = False

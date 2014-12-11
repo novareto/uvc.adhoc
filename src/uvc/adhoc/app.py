@@ -89,9 +89,9 @@ def customize_size(field):
     field.valueLength = 'medium'
 
 
-class UvcRadioFieldWidget(UvcRadioFieldWidget):
-    grok.adapts(ChoiceField, Interface, IAdHocLayer)
+#class UvcRadioFieldWidget(UvcRadioFieldWidget):
+#    grok.adapts(ChoiceField, Interface, IAdHocLayer)
 
 
-class UvcMultiChoiceFieldWidget(UvcMultiChoiceFieldWidget):
-    grok.adapts(ChoiceField, Interface, IAdHocLayer)
+#class UvcMultiChoiceFieldWidget(UvcMultiChoiceFieldWidget):
+#    grok.adapts(ChoiceField, Interface, IAdHocLayer)

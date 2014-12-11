@@ -62,7 +62,7 @@ class IAdHocContent(uvcsite.IContent):
     """
     title = TextLine(
         title = u"Titel",
-        description = u"Dieses Dokument erscheint dann unter dem Titel in Mein Ordner.",
+        description = u"",
         readonly = True,
         required = True)
 
