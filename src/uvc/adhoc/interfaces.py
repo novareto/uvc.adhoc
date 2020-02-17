@@ -5,7 +5,7 @@
 import grok
 import uvcsite
 
-from zope.schema import TextLine
+from zope.schema import TextLine, Text
 from uvc.tbskin.skin import ITBSkin
 from zope.interface import Interface
 from zope.container.interfaces import IContainer
@@ -67,6 +67,16 @@ class IAdHocContent(uvcsite.IContent):
         required = True)
 
     docid = TextLine(title=u'docid')
+
+    doc_type = TextLine(
+        title=u"Type of the Document",
+        required=True
+    )
+
+    anschreiben = Text(
+        title=u"Anschreiben",
+        required=False
+    )
 
 
 class IAdHocProductFolder(IContainer):
