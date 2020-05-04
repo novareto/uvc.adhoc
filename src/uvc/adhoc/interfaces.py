@@ -68,6 +68,11 @@ class IAdHocContent(uvcsite.IContent):
 
     docid = TextLine(title=u'docid')
 
+    doc_type = TextLine(
+        title=u"Type of the Document",
+        required=True
+    )
+
 
 class IAdHocProductFolder(IContainer):
     """ Marker Interface for AdHoc Content Types

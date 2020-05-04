@@ -76,6 +76,7 @@ class BaseAddView(Add):
         content_object = content.bind().get(self)
         if content_object:
             obj = resolve(content_object)()
+            print data
             set_fields_data(self.fields, obj, data)
             return obj
 

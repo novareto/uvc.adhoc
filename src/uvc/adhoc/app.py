@@ -5,7 +5,7 @@
 import grok
 import zope.component
 
-from uvcsite.app import UvcRadioFieldWidget, UvcMultiChoiceFieldWidget
+#from uvcsite.browser.widgets import UvcRadioFieldWidget, UvcMultiChoiceFieldWidget
 from uvc.adhoc.utils import AdHocIdReference
 from zope.component.interfaces import IComponents
 from uvc.adhoc.auth.handler import AdHocAuthenticator
